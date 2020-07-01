@@ -20,7 +20,7 @@ from os.path import dirname, join as path_join
 from setuptools import setup
 
 
-version = "20.7.0"  # TODO import from module
+version = "0.0.dev0"  # TODO import from module
 
 
 with open(path_join(dirname(__file__), "README.rst")) as f:
