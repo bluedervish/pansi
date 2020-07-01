@@ -33,27 +33,43 @@ For foreground text, the standard set of colours can be selected using the lower
 and the upper case name for high intensity.
 To select as the background colour instead, simply prefix with ``bg.``, e.g. ``bg.blue``.
 
-==============  ===========  ==============
-Colour          Foreground   Background
-==============  ===========  ==============
-Black           ``black``    ``bg.black``
-Red             ``red``      ``bg.red``
-Green           ``green``    ``bg.green``
-Yellow          ``yellow``   ``bg.yellow``
-Blue            ``blue``     ``bg.yellow``
-Magenta         ``magenta``  ``bg.magenta``
-Cyan            ``cyan``     ``bg.cyan``
-White           ``white``    ``bg.white``
-Bright black    ``BLACK``    ``bg.BLACK``
-Bright red      ``RED``      ``bg.RED``
-Bright green    ``GREEN``    ``bg.GREEN``
-Bright yellow   ``YELLOW``   ``bg.YELLOW``
-Bright blue     ``BLUE``     ``bg.YELLOW``
-Bright magenta  ``MAGENTA``  ``bg.MAGENTA``
-Bright cyan     ``CYAN``     ``bg.CYAN``
-Bright white    ``WHITE``    ``bg.WHITE``
-==============  ===========  ==============
+=====================  ===========  ==============
+Colour                 Foreground   Background
+=====================  ===========  ==============
+|K0| Black             ``black``    ``bg.black``
+|R0| Red               ``red``      ``bg.red``
+|G0| Green             ``green``    ``bg.green``
+|Y0| Yellow            ``yellow``   ``bg.yellow``
+|B0| Blue              ``blue``     ``bg.yellow``
+|M0| Magenta           ``magenta``  ``bg.magenta``
+|C0| Cyan              ``cyan``     ``bg.cyan``
+|W0| White             ``white``    ``bg.white``
+|K1| Bright black      ``BLACK``    ``bg.BLACK``
+|R1| Bright red        ``RED``      ``bg.RED``
+|G1| Bright green      ``GREEN``    ``bg.GREEN``
+|Y1| Bright yellow     ``YELLOW``   ``bg.YELLOW``
+|B1| Bright blue       ``BLUE``     ``bg.YELLOW``
+|M1| Bright magenta    ``MAGENTA``  ``bg.MAGENTA``
+|C1| Bright cyan       ``CYAN``     ``bg.CYAN``
+|W1| Bright white      ``WHITE``    ``bg.WHITE``
+=====================  ===========  ==============
 
+.. |K0| image:: https://via.placeholder.com/12.png/000/000
+.. |R0| image:: https://via.placeholder.com/12.png/a00/a00
+.. |G0| image:: https://via.placeholder.com/12.png/0a0/0a0
+.. |Y0| image:: https://via.placeholder.com/12.png/a50/a50
+.. |B0| image:: https://via.placeholder.com/12.png/00a/00a
+.. |M0| image:: https://via.placeholder.com/12.png/a0a/a0a
+.. |C0| image:: https://via.placeholder.com/12.png/0aa/0aa
+.. |W0| image:: https://via.placeholder.com/12.png/aaa/aaa
+.. |K1| image:: https://via.placeholder.com/12.png/555/555
+.. |R1| image:: https://via.placeholder.com/12.png/f55/f55
+.. |G1| image:: https://via.placeholder.com/12.png/5f5/5f5
+.. |Y1| image:: https://via.placeholder.com/12.png/ff5/ff5
+.. |B1| image:: https://via.placeholder.com/12.png/55f/55f
+.. |M1| image:: https://via.placeholder.com/12.png/f5f/f5f
+.. |C1| image:: https://via.placeholder.com/12.png/5ff/5ff
+.. |W1| image:: https://via.placeholder.com/12.png/fff/fff
 
 Full 24-bit colour support is also available (on those terminals that support it) by using the ``rgb`` selector.
 
