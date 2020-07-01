@@ -20,24 +20,32 @@ from os.path import dirname, join as path_join
 from setuptools import setup
 
 
-version = "0.0.dev0"  # TODO import from module
+from pansi import (
+    __author__,
+    __email__,
+    __license__,
+    __package__,
+    __version__,
+)
+
+source_url = "https://github.com/technige/pansi"
 
 
 with open(path_join(dirname(__file__), "README.rst")) as f:
     README = f.read().replace(".. image :: art/",
-                              ".. image :: https://github.com/technige/pansi/raw/master/art/")
+                              ".. image :: {}/raw/master/art/".format(source_url))
 
 package_metadata = {
-    "name": "pansi",
-    "version": version,
+    "name": __package__,
+    "version": __version__,
     "description": "ANSI escape code library for Python",
     "long_description": README,
-    "author": "Nigel Small",
-    "author_email": "technige@nige.tech",
-    "url": "https://nige.tech/pansi",
+    "author": __author__,
+    "author_email": __email__,
+    "url": source_url,
     "project_urls": {
-        "Bug Tracker": "https://github.com/technige/pansi/issues",
-        "Source Code": "https://github.com/technige/pansi",
+        "Bug Tracker": "{}/issues".format(source_url),
+        "Source Code": source_url,
     },
     "entry_points": {
         "console_scripts": [
@@ -52,13 +60,13 @@ package_metadata = {
     ],
     "extras_require": {
     },
-    "license": "",  # TODO
+    "license": __license__,
     "classifiers": [
-        "Development Status :: 6 - Mature",
+        "Development Status :: 1 - Planning",
         "Environment :: Console",
+        "Environment :: Console :: Curses",
         "Intended Audience :: Developers",
         "Intended Audience :: Information Technology",
-        "Intended Audience :: Science/Research",
         "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
         "Operating System :: OS Independent",
@@ -72,11 +80,15 @@ package_metadata = {
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
-        "Topic :: Database",
-        "Topic :: Database :: Database Engines/Servers",
-        "Topic :: Scientific/Engineering",
         "Topic :: Software Development",
         "Topic :: Software Development :: Libraries",
+        "Topic :: System :: Console Fonts",
+        "Topic :: System :: Shells",
+        "Topic :: Terminals",
+        "Topic :: Terminals :: Terminal Emulators/X Terminals",
+        "Topic :: Text Processing",
+        "Topic :: Text Processing :: Markup",
+        "Topic :: Utilities",
     ],
 }
 

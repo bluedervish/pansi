@@ -22,6 +22,14 @@ except ImportError:
     from collections import Mapping
 
 
+__author__ = "Nigel Small"
+__copyright__ = "2020, Nigel Small"
+__email__ = "pansi@nige.tech"
+__license__ = "Apache License, Version 2.0"
+__package__ = "pansi"
+__version__ = "0.0.dev1"
+
+
 class ANSI(Mapping, object):
 
     def __init__(self, **codes):
