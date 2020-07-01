@@ -44,27 +44,32 @@ For foreground text, the standard set of colours can be selected using the lower
 and the upper case name for high intensity.
 To select as the background colour instead, simply prefix with ``bg.``, e.g. ``bg.blue``.
 
-=======  ===========  ===========  ==============  ==============
-~        Foreground                Background
--------  ------------------------  ------------------------------
-Colour   Normal       Bright       Normal          Bright
-=======  ===========  ===========  ==============  ==============
-Black    ``black``    ``BLACK``    ``bg.black``    ``bg.BLACK``
-Red      ``red``      ``RED``      ``bg.red``      ``bg.RED``
-Green    ``green``    ``GREEN``    ``bg.green``    ``bg.GREEN``
-Yellow   ``yellow``   ``YELLOW``   ``bg.yellow``   ``bg.YELLOW``
-Blue     ``blue``     ``BLUE``     ``bg.yellow``   ``bg.YELLOW``
-Magenta  ``magenta``  ``MAGENTA``  ``bg.magenta``  ``bg.MAGENTA``
-Cyan     ``cyan``     ``CYAN``     ``bg.cyan``     ``bg.CYAN``
-White    ``white``    ``WHITE``    ``bg.white``    ``bg.WHITE``
-=======  ===========  ===========  ==============  ==============
+==============  ===========  ==============
+Colour          Foreground   Background
+==============  ===========  ==============
+Black           ``black``    ``bg.black``
+Red             ``red``      ``bg.red``
+Green           ``green``    ``bg.green``
+Yellow          ``yellow``   ``bg.yellow``
+Blue            ``blue``     ``bg.yellow``
+Magenta         ``magenta``  ``bg.magenta``
+Cyan            ``cyan``     ``bg.cyan``
+White           ``white``    ``bg.white``
+Bright black    ``BLACK``    ``bg.BLACK``
+Bright red      ``RED``      ``bg.RED``
+Bright green    ``GREEN``    ``bg.GREEN``
+Bright yellow   ``YELLOW``   ``bg.YELLOW``
+Bright blue     ``BLUE``     ``bg.YELLOW``
+Bright magenta  ``MAGENTA``  ``bg.MAGENTA``
+Bright cyan     ``CYAN``     ``bg.CYAN``
+Bright white    ``WHITE``    ``bg.WHITE``
+==============  ===========  ==============
 
 
 Full 24-bit colour support is also available (on those terminals that support it) by using the ``rgb`` selector.
 
-rgb
-
 ::
+
     >>> print("A Clockwork {rgb[FF8000]}Orange{_}".format(**ansi))
     A Clockwork Orange
 
