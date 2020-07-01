@@ -4,11 +4,7 @@ Pansi
 
 Pansi is a clean and simple ANSI escape code library for Python.
 
-::
-
-    >>> from pansi import ansi
-    >>> print("hello, {green}{name}{_}".format(name="world", **ansi))
-    hello, world
+.. image :: art/hello-world.png
 
 
 General usage
@@ -20,19 +16,12 @@ This object exposes the codes as both attributes (e.g. ``ansi.red``) and items (
 This object can therefore be used in several different ways, but the simplest is through the string ``format`` method.
 Here, if the object is supplied as a simple named argument, all references need to be prefixed:
 
-::
-
-    >>> print("hello, {ansi.green}{name}{ansi.reset}".format(name="world", ansi=ansi))
-    hello, world
-
+.. image :: art/usage-long.png
 
 Alternatively, passing the object with the ``**`` operator removes the need for prefixes and thus makes the template string shorter.
 However, this does introduce a greater chance of clashing with other parameters, and doesn't signal which parameters are which.
 
-::
-
-    >>> print("hello, {green}{name}{_}".format(name="world", **ansi))
-    hello, world
+.. image :: art/usage-short.png
 
 Ultimately, it is a subjective choice between these two options.
 
