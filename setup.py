@@ -24,7 +24,8 @@ version = "0.0.dev0"  # TODO import from module
 
 
 with open(path_join(dirname(__file__), "README.rst")) as f:
-    README = f.read()
+    README = f.read().replace(".. image :: art/",
+                              ".. image :: https://github.com/technige/pansi/raw/master/art/")
 
 package_metadata = {
     "name": "pansi",

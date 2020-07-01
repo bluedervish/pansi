@@ -57,65 +57,50 @@ Bright white    ``WHITE``    ``bg.WHITE``
 
 Full 24-bit colour support is also available (on those terminals that support it) by using the ``rgb`` selector.
 
-::
+.. image :: art/rgb-orange.png
 
-    >>> print("A Clockwork {rgb[FF8000]}Orange{_}".format(**ansi))
-    A Clockwork Orange
+Foreground and background colours can be inverted and then set back to normal using the ``rev`` and ``_rev`` tags respectively.
 
-Reverse video
-
-rev
-_rev
-
-
-Colour reset
-
-fg.reset
-bg.reset
+To reset foreground and background back to their defaults, use ``fg.reset`` and ``bg.reset``.
 
 
 Text Weight
 ===========
-weight.normal
-weight.bold
-weight.light
-b
-_b
+- ``weight.normal``
+- ``weight.bold``
+- ``weight.light``
+- ``b`` (alias for ``weight.bold``)
+- ``_b`` (alias for ``weight.normal``)
 
 
 Text Style
 ==========
-style.normal
-style.italic
-style.fraktur
-i
-_i
+- ``style.normal``
+- ``style.italic``
+- ``style.fraktur``
+- ``i`` (alias for ``style.italic``)
+- ``_i`` (alias for ``style.normal``)
 
 
 Text decoration
 ===============
-u
-uu
-_u
-o
-_o
-s
-_s
+- ``u`` (underline)
+- ``uu`` (double underline)
+- ``_u`` (no underline)
+- ``o`` (overline)
+- ``_o`` (no overline)
+- ``s`` (strike through)
+- ``_s`` (no strike through)
 
 
 Blinking
 ========
-blink
-BLINK
-_blink
+- ``blink`` (blink)
+- ``BLINK`` (blink fast)
+- ``_blink`` (no blink)
 
 
 Hide & show
 ===========
-hide
-show
-
-
-Font
-====
-font0
+- ``hide``
+- ``show``
