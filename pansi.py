@@ -27,7 +27,7 @@ __copyright__ = "2020, Nigel Small"
 __email__ = "pansi@nige.tech"
 __license__ = "Apache License, Version 2.0"
 __package__ = "pansi"
-__version__ = "0.0.dev1"
+__version__ = "2020.7.0"
 
 
 class ANSI(Mapping, object):
