@@ -28,67 +28,67 @@ def test_ansi_reset_alias():
 
 
 def test_ansi_black():
-    assert "{black}".format(**ansi) == "\x1b[30;1m"
+    assert "{black}".format(**ansi) == "\x1b[30m"
 
 
 def test_ansi_red():
-    assert "{red}".format(**ansi) == "\x1b[31;1m"
+    assert "{red}".format(**ansi) == "\x1b[31m"
 
 
 def test_ansi_green():
-    assert "{green}".format(**ansi) == "\x1b[32;1m"
+    assert "{green}".format(**ansi) == "\x1b[32m"
 
 
 def test_ansi_yellow():
-    assert "{yellow}".format(**ansi) == "\x1b[33;1m"
+    assert "{yellow}".format(**ansi) == "\x1b[33m"
 
 
 def test_ansi_blue():
-    assert "{blue}".format(**ansi) == "\x1b[34;1m"
+    assert "{blue}".format(**ansi) == "\x1b[34m"
 
 
 def test_ansi_magenta():
-    assert "{magenta}".format(**ansi) == "\x1b[35;1m"
+    assert "{magenta}".format(**ansi) == "\x1b[35m"
 
 
 def test_ansi_cyan():
-    assert "{cyan}".format(**ansi) == "\x1b[36;1m"
+    assert "{cyan}".format(**ansi) == "\x1b[36m"
 
 
 def test_ansi_white():
-    assert "{white}".format(**ansi) == "\x1b[37;1m"
+    assert "{white}".format(**ansi) == "\x1b[37m"
 
 
 def test_ansi_bright_black():
-    assert "{BLACK}".format(**ansi) == "\x1b[90;1m"
+    assert "{BLACK}".format(**ansi) == "\x1b[90m"
 
 
 def test_ansi_bright_red():
-    assert "{RED}".format(**ansi) == "\x1b[91;1m"
+    assert "{RED}".format(**ansi) == "\x1b[91m"
 
 
 def test_ansi_bright_green():
-    assert "{GREEN}".format(**ansi) == "\x1b[92;1m"
+    assert "{GREEN}".format(**ansi) == "\x1b[92m"
 
 
 def test_ansi_bright_yellow():
-    assert "{YELLOW}".format(**ansi) == "\x1b[93;1m"
+    assert "{YELLOW}".format(**ansi) == "\x1b[93m"
 
 
 def test_ansi_bright_blue():
-    assert "{BLUE}".format(**ansi) == "\x1b[94;1m"
+    assert "{BLUE}".format(**ansi) == "\x1b[94m"
 
 
 def test_ansi_bright_magenta():
-    assert "{MAGENTA}".format(**ansi) == "\x1b[95;1m"
+    assert "{MAGENTA}".format(**ansi) == "\x1b[95m"
 
 
 def test_ansi_bright_cyan():
-    assert "{CYAN}".format(**ansi) == "\x1b[96;1m"
+    assert "{CYAN}".format(**ansi) == "\x1b[96m"
 
 
 def test_ansi_bright_white():
-    assert "{WHITE}".format(**ansi) == "\x1b[97;1m"
+    assert "{WHITE}".format(**ansi) == "\x1b[97m"
 
 
 def test_ansi_rgb_3():
