@@ -17,7 +17,7 @@
 
 
 from os.path import dirname, join as path_join
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 from pansi import (
@@ -28,6 +28,7 @@ from pansi import (
     __version__,
 )
 
+
 source_url = "https://github.com/technige/pansi"
 
 
@@ -35,6 +36,8 @@ with open(path_join(dirname(__file__), "README.rst")) as f:
     README = f.read().replace(".. image :: art/",
                               ".. image :: {}/raw/master/art/".format(source_url))
 
+
+packages = find_packages(exclude=("docs", "test"))
 package_metadata = {
     "name": __package__,
     "version": __version__,
@@ -51,10 +54,8 @@ package_metadata = {
         "console_scripts": [
         ],
     },
-    "packages": [
-    ],
+    "packages": packages,
     "py_modules": [
-        "pansi",
     ],
     "install_requires": [
     ],
