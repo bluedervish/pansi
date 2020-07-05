@@ -58,6 +58,7 @@ package_metadata = {
     "py_modules": [
     ],
     "install_requires": [
+        "six>=1.13.0",
     ],
     "extras_require": {
     },

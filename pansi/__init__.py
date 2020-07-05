@@ -16,10 +16,8 @@
 # limitations under the License.
 
 
-try:
-    from collections.abc import Mapping
-except ImportError:
-    from collections import Mapping
+# noinspection PyUnresolvedReferences
+from six.moves.collections_abc import Mapping
 
 
 __author__ = "Nigel Small"
