@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-# Copyright 2011-2020, Nigel Small
+# Copyright 2020, Nigel Small
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ with open(path_join(dirname(__file__), "README.rst")) as f:
                               ".. image :: {}/raw/master/art/".format(source_url))
 
 
-packages = find_packages(exclude=("docs", "test"))
+packages = find_packages(exclude=("demo", "docs", "test"))
 package_metadata = {
     "name": __package__,
     "version": __version__,
