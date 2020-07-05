@@ -37,13 +37,13 @@ class ANSI(Mapping, object):
         return self.__codes[key]
 
     def __len__(self):
-        return len(self.__codes)
+        return len(self.__codes)    # pragma: no cover
 
     def __iter__(self):
-        return iter(self.__codes)
+        return iter(self.__codes)   # pragma: no cover
 
     def __dir__(self):
-        return list(self.__codes)
+        return list(self.__codes)   # pragma: no cover
 
     def __getattr__(self, name):
         try:
@@ -80,21 +80,11 @@ class RGB(object):
             self.__template = "\x1b[38;2;%s;%s;%sm"
 
     def __getitem__(self, code):
-        if len(code) == 3:
-            # rgb[XXX]
-            r = int(code[0], 16) * 17
-            g = int(code[1], 16) * 17
-            b = int(code[2], 16) * 17
-        elif len(code) == 4 and code[0] == "#":
+        if len(code) == 4 and code[0] == "#":
             # rgb[#XXX]
             r = int(code[1], 16) * 17
             g = int(code[2], 16) * 17
             b = int(code[3], 16) * 17
-        elif len(code) == 6:
-            # rgb[XXXXXX]
-            r = int(code[0:2], 16)
-            g = int(code[2:4], 16)
-            b = int(code[4:6], 16)
         elif len(code) == 7 and code[0] == "#":
             # rgb[#XXXXXX]
             r = int(code[1:3], 16)
