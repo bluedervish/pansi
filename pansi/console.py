@@ -72,8 +72,9 @@ class Console(object):
 
     prompt = "{cyan}->{_} ".format(**ansi)
 
-    def __init__(self, name, verbosity=None, history=None, time_format=None):
+    def __init__(self, name, out=stdout, verbosity=None, history=None, time_format=None):
         self.name = name
+        self.__out = out
         self.__history = history or expanduser(join("~", ".%s.history" % name))
         self.__looping = False
         self.__status = 0
@@ -83,7 +84,7 @@ class Console(object):
             self.__formatter = ConsoleLogFormatter("%(message)s")
         else:
             self.__formatter = ConsoleLogFormatter("%(asctime)s  %(message)s", time_format)
-        self.__handler = StreamHandler(stdout)
+        self.__handler = StreamHandler(self.__out)
         self.__handler.setFormatter(self.__formatter)
         self.__log = getLogger(self.name)
         self.__log.addHandler(self.__handler)
@@ -116,7 +117,7 @@ class Console(object):
         sep = kwargs.get("sep", " ")
         end = kwargs.get("end", "\n")
         if self.verbosity >= 0:
-            print(*values, sep=sep, end=end, file=stdout)
+            print(*values, sep=sep, end=end, file=self.__out)
 
     def debug(self, msg, *args, **kwargs):
         self.__log.debug(msg, *args, **kwargs)
