@@ -93,7 +93,10 @@ class Console(object):
             self.verbosity = verbosity
 
     def __del__(self):
-        self.__log.removeHandler(self.__handler)
+        try:
+            self.__log.removeHandler(self.__handler)
+        except ValueError:
+            pass
 
     @property
     def verbosity(self):
@@ -159,6 +162,7 @@ class Console(object):
 
     def exit(self):
         self.__looping = False
+        self.__log.removeHandler(self.__handler)
 
     def read(self):
         """ Get input.
