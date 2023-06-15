@@ -16,19 +16,15 @@
 # limitations under the License.
 
 
-try:    # pragma: no cover
-    # noinspection PyCompatibility
-    from collections.abc import Mapping
-except ImportError:
-    from collections import Mapping
+from collections.abc import Mapping
 
 
 __author__ = "Nigel Small"
 __copyright__ = "2020, Nigel Small"
-__email__ = "pansi@nige.tech"
+__email__ = "technige@nige.tech"
 __license__ = "Apache License, Version 2.0"
 __package__ = "pansi"
-__version__ = "2020.7.3"
+__version__ = "2023.6.0"
 
 
 class ANSI(Mapping, object):

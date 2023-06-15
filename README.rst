@@ -4,26 +4,11 @@ Pansi
 
 Pansi is a clean and simple ANSI escape code library for Python.
 
-.. image :: art/hello-world.png
+The library provides an object called ``ansi`` through which all escape codes can be selected.
+This object exposes the codes as both attributes (e.g. ``ansi.red``) and items (e.g. ``ansi['red']``),
+and is most easily used with `f-strings <https://peps.python.org/pep-0498/>`_:
 
-
-General usage
-=============
-
-Pansi provides an object called ``ansi`` through which all escape codes can be selected.
-This object exposes the codes as both attributes (e.g. ``ansi.red``) and items (e.g. ``ansi["red"]``).
-
-This object can therefore be used in several different ways, but the simplest is through the string ``format`` method.
-Here, if the object is supplied as a simple named argument, all references need to be prefixed:
-
-.. image :: art/usage-long.png
-
-Alternatively, passing the object with the ``**`` operator removes the need for prefixes and thus makes the template string shorter.
-However, this does introduce a greater chance of clashing with other parameters, and doesn't signal which parameters are which.
-
-.. image :: art/usage-short.png
-
-Ultimately, it is a subjective choice between these two options.
+.. image :: art/hello-rainbow.png
 
 
 Colours
