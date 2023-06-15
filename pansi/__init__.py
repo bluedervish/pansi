@@ -73,12 +73,24 @@ _border = ANSI(
 class RGB(object):
 
     def __init__(self, bg=False):
-        if bg:
-            self.__template = "\x1b[48;2;%s;%s;%sm"
-        else:
-            self.__template = "\x1b[38;2;%s;%s;%sm"
+        self.bg = bg
+        self._fg_template = "\x1b[38;2;%s;%s;%sm"
+        self._bg_template = "\x1b[48;2;%s;%s;%sm"
 
     def __getitem__(self, code):
+        if isinstance(code, slice):
+            r0, g0, b0 = self.parse_hex_code(code.start)
+            r1, g1, b1 = self.parse_hex_code(code.stop)
+            if self.bg:
+                return (self._fg_template % (r1, g1, b1)) + (self._bg_template % (r0, g0, b0))
+            else:
+                return (self._fg_template % (r0, g0, b0)) + (self._bg_template % (r1, g1, b1))
+        else:
+            r, g, b = self.parse_hex_code(code)
+            return (self._bg_template if self.bg else self._fg_template) % (r, g, b)
+
+    @classmethod
+    def parse_hex_code(cls, code):
         if len(code) == 4 and code[0] == "#":
             # rgb[#XXX]
             r = int(code[1], 16) * 17
@@ -91,7 +103,7 @@ class RGB(object):
             b = int(code[5:7], 16)
         else:
             raise ValueError("Unknown hex code %r" % code)
-        return self.__template % (r, g, b)
+        return r, g, b
 
 
 _fg = ANSI(

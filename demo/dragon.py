@@ -19,15 +19,11 @@
 from pansi import ansi
 
 
-print("""{rgb[#040]}{bg.rgb[#0F0]} !"#$%&'()*+,-./0123456789:;<=>?{_}""".format(**ansi))
-print("""{rgb[#040]}{bg.rgb[#0F0]}@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]↑←{_}""".format(**ansi))
-print("""{rgb[#0F0]}{bg.rgb[#040]}@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]↑←{_}""".format(**ansi))
-print("""{rgb[#0F0]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi), end="")
-print("""{rgb[#FF0]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi))
-print("""{rgb[#00F]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi), end="")
-print("""{rgb[#F00]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi))
-print("""{rgb[#FFF]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi), end="")
-print("""{rgb[#0FF]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi))
-print("""{rgb[#F0F]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi), end="")
-print("""{rgb[#FF8000]}{bg.rgb[#000]} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{_}""".format(**ansi))
-
+print(f"""\
+{ansi.rgb['#040':'#0F0']} !"#$%&'()*+,-./0123456789:;<=>?
+{ansi.rgb['#040':'#0F0']}@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]↑←
+{ansi.bg.rgb['#040':'#0F0']}@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]↑←
+{ansi.rgb['#0F0':'#000']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{ansi.rgb['#FF0']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█
+{ansi.rgb['#00F']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{ansi.rgb['#F00']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█
+{ansi.rgb['#FFF']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{ansi.rgb['#0FF']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█
+{ansi.rgb['#F0F']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{ansi.rgb['#FF8000']} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{ansi.reset}""")
