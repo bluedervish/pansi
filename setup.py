@@ -58,6 +58,8 @@ package_metadata = {
     "py_modules": [
     ],
     "install_requires": [
+        "pillow",
+        "urllib3",
     ],
     "extras_require": {
     },
