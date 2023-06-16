@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
 
 # Copyright 2020, Nigel Small
@@ -29,55 +29,8 @@ from tty import setcbreak
 from uuid import uuid4
 
 from PIL import Image
-from urllib3 import PoolManager as HTTP
 
-
-class URI:
-
-    @classmethod
-    def parse(cls, s):
-        scheme, colon, ssp = s.partition(":")
-        if not colon:
-            scheme, ssp = None, scheme
-        apq, hash_sign, fragment = ssp.partition("#")
-        if not hash_sign:
-            fragment = None
-        hierarchical_part, question_mark, query = apq.partition("?")
-        if not question_mark:
-            query = None
-        if hierarchical_part.startswith("//"):
-            hierarchical_part = hierarchical_part[2:]
-            slash = hierarchical_part.find("/")
-            if slash:
-                authority = hierarchical_part[:slash]
-                path = hierarchical_part[slash:]
-            else:
-                authority = hierarchical_part
-                path = ""
-        else:
-            authority = None
-            path = hierarchical_part
-        return cls(scheme, authority, path, query, fragment)
-
-    def __init__(self, scheme=None, authority=None, path="", query=None, fragment=None):
-        self.scheme = scheme
-        self.authority = authority
-        self.path = path
-        self.query = query
-        self.fragment = fragment
-
-    def __str__(self):
-        if self.authority is None:
-            s = [self.path]
-        else:
-            s = ["//", self.authority, self.path]
-        if self.query is not None:
-            s.extend(["?", self.query])
-        if self.fragment is not None:
-            s.extend(["#", self.fragment])
-        if self.scheme is not None:
-            s = [self.scheme, ":"] + s
-        return "".join(s)
+from pansi.net import download, URI
 
 
 class Terminal:
@@ -157,12 +110,7 @@ class TerminalImage:
         if uri.scheme == "file":
             return cls(Image.open(uri.path))
         elif uri.scheme in ("http", "https"):
-            http = HTTP()
-            rs = http.request("GET", str(uri))
-            if rs.status == 200:
-                return cls(Image.open(BytesIO(rs.data)))
-            else:
-                raise RuntimeError(f"GET {uri} -> {rs.status}")
+            return cls(Image.open(download(uri)))
         else:
             raise ValueError(f"Unsupported URI scheme {uri.scheme!r}")
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
 
 # Copyright 2020, Nigel Small
@@ -52,6 +52,7 @@ package_metadata = {
     },
     "entry_points": {
         "console_scripts": [
+            "pim = pansi.image:main",
         ],
     },
     "packages": packages,
