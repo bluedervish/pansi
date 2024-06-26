@@ -27,6 +27,9 @@ __package__ = "pansi"
 __version__ = "2023.6.0"
 
 
+CSI = f"\x1B["
+
+
 class ANSI(Mapping, object):
 
     def __init__(self, **codes):
@@ -52,21 +55,21 @@ class ANSI(Mapping, object):
 
 
 _weight = ANSI(
-    normal="\x1b[22m",
-    bold="\x1b[1m",
-    light="\x1b[2m",
+    normal=f"{CSI}22m",
+    bold=f"{CSI}1m",
+    light=f"{CSI}2m",
 )
 
 _style = ANSI(
-    normal="\x1b[23m",
-    italic="\x1b[3m",
-    fraktur="\x1b[20m",
+    normal=f"{CSI}23m",
+    italic=f"{CSI}3m",
+    fraktur=f"{CSI}20m",
 )
 
 _border = ANSI(
-    none="\x1b[54m",
-    frame="\x1b[51m",
-    circle="\x1b[52m",
+    none=f"{CSI}54m",
+    frame=f"{CSI}51m",
+    circle=f"{CSI}52m",
 )
 
 
@@ -74,8 +77,8 @@ class RGB(object):
 
     def __init__(self, bg=False):
         self.bg = bg
-        self._fg_template = "\x1b[38;2;%s;%s;%sm"
-        self._bg_template = "\x1b[48;2;%s;%s;%sm"
+        self._fg_template = f"{CSI}38;2;%s;%s;%sm"
+        self._bg_template = f"{CSI}48;2;%s;%s;%sm"
 
     def __getitem__(self, code):
         if isinstance(code, slice):
@@ -108,49 +111,49 @@ class RGB(object):
 
 _fg = ANSI(
 
-    black="\x1b[30m",
-    red="\x1b[31m",
-    green="\x1b[32m",
-    yellow="\x1b[33m",
-    blue="\x1b[34m",
-    magenta="\x1b[35m",
-    cyan="\x1b[36m",
-    white="\x1b[37m",
+    black=f"{CSI}30m",
+    red=f"{CSI}31m",
+    green=f"{CSI}32m",
+    yellow=f"{CSI}33m",
+    blue=f"{CSI}34m",
+    magenta=f"{CSI}35m",
+    cyan=f"{CSI}36m",
+    white=f"{CSI}37m",
     rgb=RGB(),
-    reset="\x1b[39m",
+    reset=f"{CSI}39m",
 
-    BLACK="\x1b[90m",
-    RED="\x1b[91m",
-    GREEN="\x1b[92m",
-    YELLOW="\x1b[93m",
-    BLUE="\x1b[94m",
-    MAGENTA="\x1b[95m",
-    CYAN="\x1b[96m",
-    WHITE="\x1b[97m",
+    BLACK=f"{CSI}90m",
+    RED=f"{CSI}91m",
+    GREEN=f"{CSI}92m",
+    YELLOW=f"{CSI}93m",
+    BLUE=f"{CSI}94m",
+    MAGENTA=f"{CSI}95m",
+    CYAN=f"{CSI}96m",
+    WHITE=f"{CSI}97m",
 
 )
 
 _bg = ANSI(
 
-    black="\x1b[40m",
-    red="\x1b[41m",
-    green="\x1b[42m",
-    yellow="\x1b[43m",
-    blue="\x1b[44m",
-    magenta="\x1b[45m",
-    cyan="\x1b[46m",
-    white="\x1b[47m",
+    black=f"{CSI}40m",
+    red=f"{CSI}41m",
+    green=f"{CSI}42m",
+    yellow=f"{CSI}43m",
+    blue=f"{CSI}44m",
+    magenta=f"{CSI}45m",
+    cyan=f"{CSI}46m",
+    white=f"{CSI}47m",
     rgb=RGB(bg=True),
-    reset="\x1b[49m",
+    reset=f"{CSI}49m",
 
-    BLACK="\x1b[100m",
-    RED="\x1b[101m",
-    GREEN="\x1b[102m",
-    YELLOW="\x1b[103m",
-    BLUE="\x1b[104m",
-    MAGENTA="\x1b[105m",
-    CYAN="\x1b[106m",
-    WHITE="\x1b[107m",
+    BLACK=f"{CSI}100m",
+    RED=f"{CSI}101m",
+    GREEN=f"{CSI}102m",
+    YELLOW=f"{CSI}103m",
+    BLUE=f"{CSI}104m",
+    MAGENTA=f"{CSI}105m",
+    CYAN=f"{CSI}106m",
+    WHITE=f"{CSI}107m",
 
 )
 
@@ -180,8 +183,8 @@ ansi = ANSI(
     bg=_bg,
 
     # Reversed colours
-    rev="\x1b[7m",
-    _rev="\x1b[27m",
+    rev=f"{CSI}7m",
+    _rev=f"{CSI}27m",
 
     # Weight
     weight=_weight,
@@ -194,48 +197,48 @@ ansi = ANSI(
     i=_style.italic,
 
     # Underline
-    _u="\x1b[24m",
-    u="\x1b[4m",
-    uu="\x1b[21m",
+    _u=f"{CSI}24m",
+    u=f"{CSI}4m",
+    uu=f"{CSI}21m",
 
     # Strike through
-    _s="\x1b[29m",
-    s="\x1b[9m",
+    _s=f"{CSI}29m",
+    s=f"{CSI}9m",
 
     # Overline
-    _o="\x1b[55m",
-    o="\x1b[53m",
+    _o=f"{CSI}55m",
+    o=f"{CSI}53m",
 
     # Blinking
-    _blink="\x1b[25m",
-    blink="\x1b[5m",
-    BLINK="\x1b[6m",
+    _blink=f"{CSI}25m",
+    blink=f"{CSI}5m",
+    BLINK=f"{CSI}6m",
 
     # Conceal/Reveal
-    hide="\x1b[8m",
-    show="\x1b[28m",
+    hide=f"{CSI}8m",
+    show=f"{CSI}28m",
 
     # Font
-    font0="\x1b[10m",
-    font1="\x1b[11m",
-    font2="\x1b[12m",
-    font3="\x1b[13m",
-    font4="\x1b[14m",
-    font5="\x1b[15m",
-    font6="\x1b[16m",
-    font7="\x1b[17m",
-    font8="\x1b[18m",
-    font9="\x1b[19m",
+    font0=f"{CSI}10m",
+    font1=f"{CSI}11m",
+    font2=f"{CSI}12m",
+    font3=f"{CSI}13m",
+    font4=f"{CSI}14m",
+    font5=f"{CSI}15m",
+    font6=f"{CSI}16m",
+    font7=f"{CSI}17m",
+    font8=f"{CSI}18m",
+    font9=f"{CSI}19m",
 
     # Border
     border=_border,
 
     # Superscript/Subscript
-    sup="\x1b[73m",
-    sub="\x1b[74m",
+    sup=f"{CSI}73m",
+    sub=f"{CSI}74m",
 
     # Reset
-    reset="\x1b[0m",
-    _="\x1b[0m",
+    reset=f"{CSI}0m",
+    _=f"{CSI}0m",
 
 )
