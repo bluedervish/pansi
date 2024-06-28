@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
-
+#
 # Copyright 2020, Nigel Small
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,14 +16,20 @@
 # limitations under the License.
 
 
+from fcntl import ioctl
 from sys import stdin, stdout
-from termios import tcgetattr, tcsetattr, TCSAFLUSH
+from termios import tcgetattr, tcsetattr, TCSAFLUSH, TIOCGWINSZ
 from tty import setcbreak
 
-from pansi.control import ESC, CSI, green, x
+from pansi.codes import ESC, CSI, black, red, white, bg, fg, hpos, pos, cur, x, b, bx, i, ix, u, ux, uu, s, sx, rv, rvx
 
 
 class Screen:
+
+    @classmethod
+    def wrapper(cls, func, *args, **kwargs):
+        with Screen() as screen:
+            return func(screen, *args, **kwargs)
 
     def __init__(self, cout=stdout, cin=stdin, cbreak=True, cursor=False):
         self.cout = cout
@@ -42,33 +48,65 @@ class Screen:
         self.hide()
         self.show_cursor()
 
-    def read_response(self):
-        response = []
-        while response[-2:] != [ESC, "["]:
-            ch = self.cin.read(1)
-            response.append(ch)
-        args = []
-        function = None
-        digit = None
+    def _read_ss3(self, seq):
         while True:
             ch = self.cin.read(1)
-            if '0' <= ch <= '9':
-                if digit is None:
-                    digit = int(ch)
-                else:
-                    digit = 10 * digit + int(ch)
-            else:
-                if digit is not None:
-                    args.append(digit)
-                    digit = None
-                if ch == ';':
-                    continue
-                else:
-                    function = ch
-                    break
-        return tuple(args), function
+            seq += ch
+            if 0x40 <= ord(ch) <= 0x7E:
+                break
+        return seq
 
-    def cell_size_px(self):
+    def _read_csi(self, seq):
+        while True:
+            ch = self.cin.read(1)
+            seq += ch
+            if 0x40 <= ord(ch) <= 0x7E:
+                break
+        return seq
+
+    def _read_esc(self, seq):
+        ch = self.cin.read(1)
+        seq += ch
+        if ch == "[":
+            return self._read_csi(seq)
+        elif ch == "O":
+            return self._read_ss3(seq)
+        else:
+            raise OSError(f"Unknown input sequence {seq!r}")
+
+    def read_key(self):
+        seq = ""
+        ch = self.cin.read(1)
+        seq += ch
+        if ch == ESC:
+            return self._read_esc(seq)
+        else:
+            return seq
+
+    def read_response(self):
+        seq = self.read_key()
+        if seq.startswith(f"{ESC}["):
+            args = tuple(map(int, seq[2:-1].split(";")))
+            function = seq[-1]
+            return args, function
+        else:
+            raise OSError(f"Unexpected response {seq!r}")
+
+    @property
+    def size_px(self):
+        self.cout.write(f"{CSI}14t")
+        self.cout.flush()
+        args, function = self.read_response()
+        if function == "t":
+            if args[0] == 4:
+                return args[1:]
+            else:
+                raise OSError(f"Unexpected response {function!r} {args[0]!r}")
+        else:
+            raise OSError(f"Unexpected response {function!r}")
+
+    @property
+    def cell_size(self):
         self.cout.write(f"{CSI}16t")
         self.cout.flush()
         args, function = self.read_response()
@@ -80,41 +118,30 @@ class Screen:
         else:
             raise OSError(f"Unexpected response {function!r}")
 
+    @property
     def size(self):
-        self.cout.write(f"{CSI}18t")
-        self.cout.flush()
-        args, function = self.read_response()
-        if function == "t":
-            if args[0] == 8:
-                return args[1:]
-            else:
-                raise OSError(f"Unexpected response {function!r} {args[0]!r}")
-        else:
-            raise OSError(f"Unexpected response {function!r}")
+        import struct
+        import os
+        try:
+            # Create a buffer for the ioctl call
+            buf = struct.pack('HHHH', 0, 0, 0, 0)
 
-    def cursor_up(self, n=1):
-        self.cout.write(f"{CSI}{n}A")
+            # Make the ioctl call
+            fd = os.open(os.ctermid(), os.O_RDONLY)
+            result = ioctl(fd, TIOCGWINSZ, buf)
+            os.close(fd)
 
-    def cursor_down(self, n=1):
-        self.cout.write(f"{CSI}{n}B")
+            # Unpack the result
+            rows, cols, _, _ = struct.unpack('HHHH', result)
 
-    def cursor_forward(self, n=1):
-        self.cout.write(f"{CSI}{n}C")
-
-    def cursor_back(self, n=1):
-        self.cout.write(f"{CSI}{n}D")
-
-    def cursor_next_line(self, n=1):
-        self.cout.write(f"{CSI}{n}E")
-
-    def cursor_previous_line(self, n=1):
-        self.cout.write(f"{CSI}{n}F")
-
-    def cursor_horizontal_absolute(self, column=1):
-        self.cout.write(f"{CSI}{column}G")
+            return rows, cols
+        except OSError:
+            # Fallback method using environment variables
+            return (int(os.environ.get('LINES', 24)),
+                    int(os.environ.get('COLUMNS', 80)))
 
     @property
-    def cursor_position(self):
+    def cur_pos(self):
         self.cout.write(f"{CSI}6n")
         self.cout.flush()
         args, function = self.read_response()
@@ -123,38 +150,26 @@ class Screen:
         else:
             raise OSError(f"Unexpected response {function!r}")
 
-    @cursor_position.setter
-    def cursor_position(self, row_column):
+    @cur_pos.setter
+    def cur_pos(self, row_column):
         row, column = row_column
         self.cout.write(f"{CSI}{row};{column}H")
 
     def cursor_forward_tab(self, stops=1):
         self.cout.write(f"{CSI}{stops}I")
 
-    def erase_in_display(self, n=0):
-        self.cout.write(f"{CSI}{n}J")
-
-    def erase_in_line(self, n=0):
-        self.cout.write(f"{CSI}{n}K")
-
-    def scroll_up(self, n=1):
-        self.cout.write(f"{CSI}{n}S")
-
-    def scroll_down(self, n=1):
-        self.cout.write(f"{CSI}{n}T")
-
-    def horizontal_vertical_position(self, row=1, column=1):
-        self.cout.write(f"{CSI}{row};{column}f")
+    def clear(self):
+        self.cout.write(f"{CSI}H{CSI}2J")
 
     def show(self):
         self.cout.write(f"{CSI}?1049h")
         self.cout.flush()
         self.original_mode = tcgetattr(self.cout)
         setcbreak(self.cout)
-        # TODO: keypad(1)
+        # self.keypad_on()
 
     def hide(self):
-        # TODO: keypad(0)
+        # self.keypad_off()
         tcsetattr(self.cout, TCSAFLUSH, self.original_mode)
         self.cout.write(f"{CSI}?1049l")
         self.cout.flush()
@@ -167,13 +182,56 @@ class Screen:
         self.cout.write(f"{CSI}?25l")
         self.cout.flush()
 
+    # def keypad_on(self):
+    #     self.cout.write(f"{CSI}?1h{ESC}=")
+    #     self.cout.flush()
 
-def full():
-    with Screen() as screen:
-        screen.cout.write(f"{green}hello{x}, the screen size is {screen.size()!r}\n")
-        screen.cout.write(f"the cell size is {screen.cell_size_px()!r}\n")
-        screen.cursor_position = 13, 7
-        screen.cout.write(repr(screen.cursor_position))
+    # def keypad_off(self):
+    #     self.cout.write(f"{CSI}?1l{ESC}>")
+    #     self.cout.flush()
+
+    def write(self, s):
+        self.cout.write(str(s))
+
+
+def test_card(screen: Screen):
+    height, width = screen.size
+    screen.clear()
+    screen.write(f"TL{cur.hpos(width - 1)}TR{cur.pos(height, 1)}BL{cur.hpos(width - 1)}BR")
+    for line in range(2, 24):
+        screen.cur_pos = line, 1
+        screen.write(f"|{cur.hpos(80)}|")
+
+    screen.cur_pos = 17, 13
+    screen.write(f"{b}  BOLD  {bx}{i} ITALIC {ix}{s} STRIKE {sx}{rv}REVERSED{rvx}")
+    screen.cur_pos = 18, 13
+    screen.write(f"{u} UNDERL {ux}{uu} DUNDER {ux}")
+    screen.cur_pos = 20, 13
+    screen.write(f"{fg.BLACK}{bg.black} BK ")
+    screen.write(f"{fg.RED}{bg.red} RD ")
+    screen.write(f"{fg.GREEN}{bg.green} GN ")
+    screen.write(f"{fg.YELLOW}{bg.yellow} YL ")
+    screen.write(f"{fg.BLUE}{bg.blue} BU ")
+    screen.write(f"{fg.MAGENTA}{bg.magenta} MA ")
+    screen.write(f"{fg.CYAN}{bg.cyan} CY ")
+    screen.write(f"{fg.WHITE}{bg.white} WT ")
+    screen.cur_pos = 21, 13
+    screen.write(f"{fg.black}{bg.BLACK} BK ")
+    screen.write(f"{fg.red}{bg.RED} RD ")
+    screen.write(f"{fg.green}{bg.GREEN} GN ")
+    screen.write(f"{fg.yellow}{bg.YELLOW} YL ")
+    screen.write(f"{fg.blue}{bg.BLUE} BU ")
+    screen.write(f"{fg.magenta}{bg.MAGENTA} MA ")
+    screen.write(f"{fg.cyan}{bg.CYAN} CY ")
+    screen.write(f"{fg.white}{bg.WHITE} WT {x}")
+
+    screen.cout.flush()
+    screen.cur_pos = 10, 10
+    while True:
+        k = screen.read_key()
+        screen.write(f"{k!r} ")
         screen.cout.flush()
-        from time import sleep
-        sleep(3)
+
+
+if __name__ == "__main__":
+    Screen.wrapper(test_card)

@@ -66,6 +66,19 @@ class CodeSet(Mapping, object):
 
 # SGR
 
+cur = CodeSet(
+    hpos=(lambda column: f"{CSI}{column}G"),
+    pos=(lambda row, column: f"{CSI}{row};{column}H"),
+)
+
+
+def hpos(column):
+    return f"{CSI}{column}G"
+
+
+def pos(row, column):
+    return f"{CSI}{row};{column}H"
+
 
 def sgr(*args):
     return f"{CSI}{';'.join(map(str, args))}m"
@@ -169,8 +182,8 @@ reverse = CodeSet(
     on=sgr(7),
     off=sgr(27),
 )
-r = sgr(7)
-rx = sgr(27)
+rv = sgr(7)
+rvx = sgr(27)
 
 # Weight
 weight = CodeSet(
@@ -194,7 +207,7 @@ underline = CodeSet(
     single=sgr(4),
     double=sgr(21),
     none=sgr(24),
-    color=RGB(58),
+    rgb=RGB(58),
 )
 u = sgr(4)
 uu = sgr(21)
