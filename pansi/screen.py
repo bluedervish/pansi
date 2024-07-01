@@ -21,7 +21,8 @@ from sys import stdin, stdout
 from termios import tcgetattr, tcsetattr, TCSAFLUSH, TIOCGWINSZ
 from tty import setcbreak
 
-from pansi.codes import ESC, CSI, black, red, white, bg, fg, hpos, pos, cur, x, b, bx, i, ix, u, ux, uu, s, sx, rv, rvx
+from pansi.codes import ESC, CSI, cur, x, bold, faint, italic, rev, blink, strike, underline, BLACK, bg, RED, GREEN, \
+    YELLOW, BLUE, MAGENTA, CYAN, WHITE, black, red, green, yellow, blue, magenta, cyan, white
 
 
 class Screen:
@@ -190,47 +191,67 @@ class Screen:
     #     self.cout.write(f"{CSI}?1l{ESC}>")
     #     self.cout.flush()
 
-    def write(self, s):
-        self.cout.write(str(s))
+    def write(self, *values):
+        for value in values:
+            self.cout.write(str(value))
+
+    def flush(self):
+        self.cout.flush()
 
 
 def test_card(screen: Screen):
     height, width = screen.size
     screen.clear()
-    screen.write(f"TL{cur.hpos(width - 1)}TR{cur.pos(height, 1)}BL{cur.hpos(width - 1)}BR")
+    screen.write(f"TL{cur.hpos(width - 1)}TR")
+
+    screen.cur_pos = 24, 1
+    screen.write(f"{BLACK}{bg.black}     "
+                 f"{RED}{bg.red}     ")
+    screen.write(f"{GREEN}{bg.green}     ")
+    screen.write(f"{YELLOW}{bg.yellow}     ")
+    screen.write(f"{BLUE}{bg.blue}     ")
+    screen.write(f"{MAGENTA}{bg.magenta}     ")
+    screen.write(f"{CYAN}{bg.cyan}     ")
+    screen.write(f"{WHITE}{bg.white}     ")
+    screen.write(f"{black}{bg.BLACK}     ")
+    screen.write(f"{red}{bg.RED}     ")
+    screen.write(f"{green}{bg.GREEN}     ")
+    screen.write(f"{yellow}{bg.YELLOW}     ")
+    screen.write(f"{blue}{bg.BLUE}     ")
+    screen.write(f"{magenta}{bg.MAGENTA}     ")
+    screen.write(f"{cyan}{bg.CYAN}     ")
+    screen.write(f"{white}{bg.WHITE}     {x}")
+
+    if height == 24:
+        screen.write(cur.pos(height, 1), f"{bg.black}BL{x}")
+    else:
+        screen.write(cur.pos(height, 1), f"BL")
+    if height == 24 and width == 80:
+        screen.write(cur.pos(height, width - 1), f"{black}{bg.WHITE}BR{x}")
+    else:
+        screen.write(cur.pos(height, width - 1), f"BR")
+
     for line in range(2, 24):
         screen.cur_pos = line, 1
-        screen.write(f"|{cur.hpos(80)}|")
+        g = 11 * line - 9
+        screen.write(f"{faint}{line:02}{faint.off}{cur.hpos(79)}{bg.rgb(g, g, g)}  {bg}")
 
-    screen.cur_pos = 17, 13
-    screen.write(f"{b}  BOLD  {bx}{i} ITALIC {ix}{s} STRIKE {sx}{rv}REVERSED{rvx}")
-    screen.cur_pos = 18, 13
-    screen.write(f"{u} UNDERL {ux}{uu} DUNDER {ux}")
-    screen.cur_pos = 20, 13
-    screen.write(f"{fg.BLACK}{bg.black} BK ")
-    screen.write(f"{fg.RED}{bg.red} RD ")
-    screen.write(f"{fg.GREEN}{bg.green} GN ")
-    screen.write(f"{fg.YELLOW}{bg.yellow} YL ")
-    screen.write(f"{fg.BLUE}{bg.blue} BU ")
-    screen.write(f"{fg.MAGENTA}{bg.magenta} MA ")
-    screen.write(f"{fg.CYAN}{bg.cyan} CY ")
-    screen.write(f"{fg.WHITE}{bg.white} WT ")
-    screen.cur_pos = 21, 13
-    screen.write(f"{fg.black}{bg.BLACK} BK ")
-    screen.write(f"{fg.red}{bg.RED} RD ")
-    screen.write(f"{fg.green}{bg.GREEN} GN ")
-    screen.write(f"{fg.yellow}{bg.YELLOW} YL ")
-    screen.write(f"{fg.blue}{bg.BLUE} BU ")
-    screen.write(f"{fg.magenta}{bg.MAGENTA} MA ")
-    screen.write(f"{fg.cyan}{bg.CYAN} CY ")
-    screen.write(f"{fg.white}{bg.WHITE} WT {x}")
+    screen.write(cur.pos(2, 5), f" !\"#$%&'()*+,-./0123456789;:<=>?")
+    screen.write(cur.pos(3, 5), "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_")
+    screen.write(cur.pos(4, 5), "`abcdefghijklmnopqrstuvwxyz{|}~")
 
-    screen.cout.flush()
+    screen.write(f"{cur.pos(6, 5)}Emphasis  : {bold}bold{bold.off} {faint}faint{faint.off} {italic}italic{italic.off}")
+    screen.write(f"{cur.pos(7, 5)}Underline : {underline}single{underline.off} {underline.double}double{underline.off}")
+    screen.write(f"{cur.pos(8, 5)}Blink     : {blink}slow{blink.off} {blink.fast}fast{blink.off}")
+    screen.write(f"{cur.pos(9, 5)}Reverse   : {rev}reverse{rev.off}")
+    screen.write(cur.pos(10, 5), f"Strike    : {strike}strike{strike.off}")
+
+    screen.flush()
     screen.cur_pos = 10, 10
     while True:
         k = screen.read_key()
         screen.write(f"{k!r} ")
-        screen.cout.flush()
+        screen.flush()
 
 
 if __name__ == "__main__":

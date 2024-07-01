@@ -16,14 +16,13 @@
 # limitations under the License.
 
 
-from pansi.codes import rgb, bg, x, rv, rvx
-
+from pansi.codes import rgb, bg, x, rev
 
 print(f"""\
-{bg.rgb('#0F0')}{rgb('#040')} !"#$%&'()*+,-./0123456789:;<=>?
+{rgb('#040')}{bg.rgb('#0F0')} !"#$%&'()*+,-./0123456789:;<=>?
 @ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]↑←
-{rv}@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]↑←{rvx}
-{bg.black}{rgb('#0F0')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{rgb('#FF0')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█
+{rev}@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]↑←{rev.off}
+{rgb('#0F0')}{bg.black} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{rgb('#FF0')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█
 {rgb('#00F')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{rgb('#F00')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█
 {rgb('#FFF')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{rgb('#0FF')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█
 {rgb('#F0F')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{rgb('#FF8000')} ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█{x}""")
